@@ -1,5 +1,6 @@
 package com.FirstAPI.config;
 
+import java.util.List;
 import com.FirstAPI.contentcalendar.model.Content;
 import com.FirstAPI.contentcalendar.repository.ContentRepository;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -20,12 +21,15 @@ public class DataLoader implements CommandLineRunner {
 
     public DataLoader(ContentRepository repository) {
         this.repository = repository;
+        this.objectMapper = new ObjectMapper(); //Forgot to initalize object mapper
     }
 
     @Override
     public void run(String... args) throws Exception {
-        try(InputStream inputStream = TypeReference.class.getResourceAsStream(name:"/data/content.json"))
-        repository.saveAll(objectMapper.readValue(inputStream,new TypeReference<List<Content>>(){}));
+        try(InputStream inputStream = TypeReference.class.getResourceAsStream("/data/content.json")) {
+            repository.saveAll(objectMapper.readValue(inputStream, new TypeReference<List<Content>>() {
+            }));
+        }
     }
 
 }
